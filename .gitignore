@@ -16,9 +16,11 @@
 # production
 /build
 
+
 # misc
 .DS_Store
 *.pem
+/pw.txt
 
 # debug
 npm-debug.log*
