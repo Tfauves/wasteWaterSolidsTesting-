@@ -1,14 +1,45 @@
 "use client";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 const Form = () => {
-  const { register, handleSubmit } = useForm();
-
-  const onSubmit = (data) => {
-    // Handle form submission here
+  const handleChange = (e) => {
+    const value = e.target.value;
+    const name = e.target.name;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("submitted");
+    const res = await fetch("/api/Reports", {
+      method: "POST",
+      body: JSON.stringify({ formData }),
+      "content-type": "application/json",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to create Ticket!");
+    }
+
+    router.refresh();
+    router.push("/");
+  };
+
+  const startingReportData = {
+    fivemin: "",
+    tenmin: "",
+    fifteenmin: "",
+    twentymin: "",
+    twentyfivemin: "",
+    thirtymin: "",
+  };
+
+  const [formData, setFormData] = useState(startingReportData);
+  console.log(formData);
   return (
     <div>
       <form
@@ -19,57 +50,58 @@ const Form = () => {
         <label>5 min</label>
         <input
           id="5 min"
-          name="5 min"
-          type="number"
-          //   onChange={handleChange}
-          required={true}
-          //   value={formData.title}
+          name="fivemin"
+          type="text"
+          onChange={handleChange}
+          //   required={true}
+          value={formData.fivemin}
         />
         <label>10 min</label>
         <input
-          id="title"
-          name="title"
+          id="10 min"
+          name="tenmin"
           type="text"
-          //   onChange={handleChange}
-          required={true}
-          //   value={formData.title}
+          onChange={handleChange}
+          //   required={true}
+          value={formData.tenmin}
         />
         <label>15 min</label>
         <input
-          id="title"
-          name="title"
+          id="15 min"
+          name="fifteenmin"
           type="text"
-          //   onChange={handleChange}
-          required={true}
-          //   value={formData.title}
+          onChange={handleChange}
+          //   required={true}
+          value={formData.fifteenmin}
         />
         <label>20 min</label>
         <input
-          id="title"
-          name="title"
+          id="20 min"
+          name="twentymin"
           type="text"
-          //   onChange={handleChange}
-          required={true}
-          //   value={formData.title}
+          onChange={handleChange}
+          //   required={true}
+          value={formData.twentymin}
         />
         <label>25 min</label>
         <input
-          id="title"
-          name="title"
+          id="25 min"
+          name="twentyfivemin"
           type="text"
-          //   onChange={handleChange}
-          required={true}
-          //   value={formData.title}
+          onChange={handleChange}
+          //   required={true}
+          value={formData.twentyfivemin}
         />
         <label>30 min</label>
         <input
-          id="title"
-          name="title"
+          id="30 min"
+          name="thirty min"
           type="text"
-          //   onChange={handleChange}
-          required={true}
-          //   value={formData.title}
+          onChange={handleChange}
+          //   required={true}
+          value={formData.thirtymin}
         />
+        <input type="submit" className="btn max-w-xs" value="Create Report" />
       </form>
     </div>
   );
