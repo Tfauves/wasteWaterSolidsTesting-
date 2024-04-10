@@ -12,10 +12,11 @@ const Nav = () => {
         <Link href={"/ticketPage/new"}>
           <FontAwesomeIcon icon={faTicket} className="icon" />
         </Link> */}
-        <h1>Solids Testing</h1>
+        <Link href="/">Wastewater Solids Testing</Link>
+        <Link href="/settlometerTest">SettlOmeter Report</Link>
       </div>
       <div>
-        <p className="text-default-text">some email here</p>
+        <p className="text-default-text">some operator name </p>
       </div>
     </nav>
   );
