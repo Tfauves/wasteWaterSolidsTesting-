@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const Form = () => {
+const SettleometerForm = () => {
   const router = useRouter();
   const handleChange = (e) => {
     const value = e.target.value;
@@ -33,6 +33,9 @@ const Form = () => {
   };
 
   const startingReportData = {
+    operatorID: "",
+    description: "",
+    category: "",
     fivemin: "",
     tenmin: "",
     fifteenmin: "",
@@ -51,6 +54,35 @@ const Form = () => {
         method="post"
         onSubmit={handleSubmit}
       >
+        <h3>Create Your Report</h3>
+        <label>Operator Id:</label>
+        <input
+          id="operatorID"
+          name="operatorID"
+          type="text"
+          onChange={handleChange}
+          required={true}
+          value={formData.operatorID}
+        />
+        <label>Description</label>
+        <textarea
+          id="description"
+          name="description"
+          onChange={handleChange}
+          required={true}
+          value={formData.description}
+          rows="5"
+        />
+        <label>Category</label>
+        <select
+          name="category"
+          value={formData.category}
+          onChange={handleChange}
+        >
+          <option value="routine">Routine Monitor</option>
+          <option value="suspected problem">Suspected Problem</option>
+          <option value="test">Test</option>
+        </select>
         <label>5 min</label>
         <input
           id="5 min"
@@ -111,4 +143,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default SettleometerForm;

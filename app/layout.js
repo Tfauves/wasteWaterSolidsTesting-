@@ -2,11 +2,15 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Nav from "./(components)/Nav";
 
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+
+config.autoAddCss = false;
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Solids Testing",
-  description: "Wastewater Solids Testing",
+  description: "Wastewater Solids Testing Report",
 };
 
 export default function RootLayout({ children }) {

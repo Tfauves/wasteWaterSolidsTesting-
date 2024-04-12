@@ -1,22 +1,20 @@
 import Link from "next/link";
-import { faHome, faTicket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartBar, faHome } from "@fortawesome/free-solid-svg-icons";
 
 const Nav = () => {
   return (
     <nav className="flex justify-between bg-nav p-4">
       <div className="flex items-center space-x-4">
-        {/* <Link href={"/"}>
+        <Link href={"/"}>
           <FontAwesomeIcon icon={faHome} className="icon" />
         </Link>
-        <Link href={"/ticketPage/new"}>
-          <FontAwesomeIcon icon={faTicket} className="icon" />
-        </Link> */}
-        <Link href="/">Wastewater Solids Testing</Link>
-        <Link href="/settlometerTest">SettlOmeter Report</Link>
+        <Link href={"/reportPage/new"}>
+          <FontAwesomeIcon icon={faChartBar} className="icon" />
+        </Link>
       </div>
       <div>
-        <p className="text-default-text">some operator name </p>
+        <p className="text-default-text"> login</p>
       </div>
     </nav>
   );
