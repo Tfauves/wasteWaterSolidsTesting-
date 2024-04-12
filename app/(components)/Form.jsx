@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const Form = () => {
+  const router = useRouter();
   const handleChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
@@ -18,7 +19,9 @@ const Form = () => {
     const res = await fetch("/api/Reports", {
       method: "POST",
       body: JSON.stringify({ formData }),
-      "content-type": "application/json",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     if (!res.ok) {
@@ -42,6 +45,7 @@ const Form = () => {
   console.log(formData);
   return (
     <div>
+      <h1>Settle'O'meter Report</h1>
       <form
         className="flex flex-col gap-3 w-1/2"
         method="post"
@@ -95,7 +99,7 @@ const Form = () => {
         <label>30 min</label>
         <input
           id="30 min"
-          name="thirty min"
+          name="thirtymin"
           type="text"
           onChange={handleChange}
           //   required={true}

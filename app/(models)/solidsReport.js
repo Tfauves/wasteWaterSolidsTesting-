@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.Promise = global.Promise;
 
-const settlometerReportSchema = new Schema(
+const solidsReportSchema = new Schema(
   {
     fiveMinMark: Number,
     tenMinMark: Number,
