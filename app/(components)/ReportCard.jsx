@@ -22,17 +22,18 @@ const ReportCard = ({ report }) => {
       <div className="ml-auto">
         <DeleteBlock />
       </div>
-      {/* <Link href={`/reportPage/${report._id}`} style={{ display: "contents" }}> */}
-      {/* <h4>{report.operatorID}</h4> */}
-      <hr className="h-px border-0 bg-page mb-2" />
-      {/* <p className="whitespace-pre-wrap">{ticket.description}</p> */}
-      <div className="flex-grow"></div>
-      <div className="flex mt-2">
-        <div className="flex flex-col">
-          {/* <p className="text-xs my-1">{formatTimestamp(report.createdAt)}</p> */}
+      <Link href={`/reportPage/${report._id}`} style={{ display: "contents" }}>
+        {" "}
+        <h4>{report.operatorID}</h4>
+        <hr className="h-px border-0 bg-page mb-2" />
+        <p className="whitespace-pre-wrap">{report.description}</p>
+        <div className="flex-grow"></div>
+        <div className="flex mt-2">
+          <div className="flex flex-col">
+            <p className="text-xs my-1">{formatTimestamp(report.createdAt)}</p>
+          </div>
         </div>
-      </div>
-      {/* </Link> */}
+      </Link>
     </div>
   );
 };
