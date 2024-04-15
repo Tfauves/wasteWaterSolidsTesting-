@@ -6,12 +6,23 @@ const SettleometerForm = () => {
   const router = useRouter();
 
   const handleChange = (e) => {
-    const value = e.target.value;
-    const name = e.target.name;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    const { name, value } = e.target;
+
+    // If the changed input belongs to timeMarks
+    if (name.startsWith("timeMarks")) {
+      const timeKey = name.split("_")[1]; // Extract the time mark key
+      const updatedTimeMarks = { ...formData.timeMarks, [timeKey]: value };
+      setFormData((prevState) => ({
+        ...prevState,
+        timeMarks: updatedTimeMarks,
+      }));
+    } else {
+      // If it's a top-level property
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -37,12 +48,14 @@ const SettleometerForm = () => {
     operatorID: "",
     description: "",
     category: "",
-    fivemin: "",
-    tenmin: "",
-    fifteenmin: "",
-    twentymin: "",
-    twentyfivemin: "",
-    thirtymin: "",
+    timeMarks: {
+      fivemin: "",
+      tenmin: "",
+      fifteenmin: "",
+      twentymin: "",
+      twentyfivemin: "",
+      thirtymin: "",
+    },
   };
 
   const [formData, setFormData] = useState(startingReportData);
@@ -87,7 +100,21 @@ const SettleometerForm = () => {
             <option value="suspected problem">Suspected Problem</option>
             <option value="test">Test</option>
           </select>
-          <label>5 min</label>
+          {/* Render time mark inputs */}
+          {Object.entries(formData.timeMarks).map(([timeKey, timeValue]) => (
+            <div className="flex flex-col mt-3" key={timeKey}>
+              <label>{timeKey}</label>
+              <input
+                id={timeKey}
+                name={`timeMarks_${timeKey}`}
+                type="text"
+                onChange={handleChange}
+                value={timeValue}
+                className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring focus:border-blue-300 w-60"
+              />
+            </div>
+          ))}
+          {/* <label>5 min</label>
           <input
             id="5min"
             name="fivemin"
@@ -140,7 +167,7 @@ const SettleometerForm = () => {
             onChange={handleChange}
             //   required={true}
             value={formData.thirtymin}
-          />
+          /> */}
           <input type="submit" className="btn max-w-xs" value="Create Report" />
         </form>
       </div>
