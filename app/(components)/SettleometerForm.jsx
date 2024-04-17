@@ -100,74 +100,21 @@ const SettleometerForm = () => {
             <option value="suspected problem">Suspected Problem</option>
             <option value="test">Test</option>
           </select>
-          {/* Render time mark inputs */}
-          {Object.entries(formData.timeMarks).map(([timeKey, timeValue]) => (
-            <div className="flex flex-col mt-3" key={timeKey}>
-              <label>{timeKey}</label>
-              <input
-                id={timeKey}
-                name={`timeMarks_${timeKey}`}
-                type="text"
-                onChange={handleChange}
-                value={timeValue}
-                className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring focus:border-blue-300 w-60"
-              />
-            </div>
-          ))}
-          {/* <label>5 min</label>
-          <input
-            id="5min"
-            name="fivemin"
-            type="text"
-            onChange={handleChange}
-            //   required={true}
-            value={formData.fivemin}
-          />
-          <label>10 min</label>
-          <input
-            id="10min"
-            name="tenmin"
-            type="text"
-            onChange={handleChange}
-            //   required={true}
-            value={formData.tenmin}
-          />
-          <label>15 min</label>
-          <input
-            id="15min"
-            name="fifteenmin"
-            type="text"
-            onChange={handleChange}
-            //   required={true}
-            value={formData.fifteenmin}
-          />
-          <label>20 min</label>
-          <input
-            id="20min"
-            name="twentymin"
-            type="text"
-            onChange={handleChange}
-            //   required={true}
-            value={formData.twentymin}
-          />
-          <label>25 min</label>
-          <input
-            id="25min"
-            name="twentyfivemin"
-            type="text"
-            onChange={handleChange}
-            //   required={true}
-            value={formData.twentyfivemin}
-          />
-          <label>30 min</label>
-          <input
-            id="30min"
-            name="thirtymin"
-            type="text"
-            onChange={handleChange}
-            //   required={true}
-            value={formData.thirtymin}
-          /> */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {Object.entries(formData.timeMarks).map(([timeKey, timeValue]) => (
+              <div className="flex flex-col" key={timeKey}>
+                <label>{timeKey}</label>
+                <input
+                  id={timeKey}
+                  name={`timeMarks_${timeKey}`}
+                  type="text"
+                  onChange={handleChange}
+                  value={timeValue}
+                  className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring focus:border-blue-300 w-full"
+                />
+              </div>
+            ))}
+          </div>
           <input type="submit" className="btn max-w-xs" value="Create Report" />
         </form>
       </div>
