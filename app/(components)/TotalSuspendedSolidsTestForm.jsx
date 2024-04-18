@@ -1,7 +1,197 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const TotalSuspendedSolidsTestForm = () => {
-  return <div>TotalSuspendedSolidsForm</div>;
+  const router = useRouter();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("submitted");
+    const res = await fetch("", {
+      method: "POST",
+      body: JSON.stringify({ formData }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Failed to create Report!");
+    }
+
+    router.refresh();
+    router.push("/");
+  };
+
+  const startingReportData = {
+    testNumber: "",
+    A_dryFilterWithSolids: "",
+    B_cleanFilter: "",
+    // A-B
+    C_drySolids: "",
+    D_volOfSample: "",
+    //C/D * 1,000,000
+    E_tssOfSample: "",
+    F_filterAndAsh: "",
+    //F-B
+    G_weightOfAsh: "",
+    //C-G
+    H_weightOfVolatileSolids: "",
+    //H/D * 1,000,000
+    I_volatileSolidsVSS: "",
+    //I/E *100
+    J_percentVolatileSolids: "",
+    notes: "",
+  };
+
+  const [formData, setFormData] = useState(startingReportData);
+
+  return (
+    <div>
+      <div className="flex mt-10 justify-center">
+        <h2>Total Suspended Solids Test</h2>
+      </div>
+      <div className="flex justify-center">
+        <form
+          className="flex flex-col gap-3 w-1/2"
+          method="post"
+          onSubmit={handleSubmit}
+        >
+          <h4>Create Your Report</h4>
+          <label>Test Number</label>
+          <input
+            id="testNumber"
+            name="testNumber"
+            type="text"
+            onChange={handleChange}
+            required={true}
+            value={formData.testNumber}
+          />
+          <label>Notes</label>
+          <textarea
+            id="notes"
+            name="notes"
+            onChange={handleChange}
+            value={formData.notes}
+            rows="5"
+          />
+
+          <label>A</label>
+          <input
+            id="A"
+            name="A_dryFilterWithSolids"
+            type="text"
+            onChange={handleChange}
+            required={true}
+            placeholder="Dry Filter With Solids"
+            value={formData.A_dryFilterWithSolids}
+          />
+
+          <label>B</label>
+          <input
+            id="B"
+            name="B_cleanFilter"
+            type="text"
+            onChange={handleChange}
+            required={true}
+            placeholder="Clean Filter"
+            value={formData.B_cleanFilter}
+          />
+          <label>C</label>
+          <input
+            id="C"
+            name="C_drySolids"
+            type="text"
+            onChange={handleChange}
+            required={true}
+            placeholder="Weight of Dry Solids"
+            value={formData.C_drySolids}
+          />
+          <label>D</label>
+          <input
+            id="D"
+            name="D_volOfSample"
+            type="text"
+            onChange={handleChange}
+            required={true}
+            placeholder="Vol of Sample"
+            value={formData.D_volOfSample}
+          />
+          <label>E</label>
+          <input
+            id="E"
+            name="E_tssOfSample"
+            type="text"
+            onChange={handleChange}
+            required={true}
+            placeholder="TSS of Sample"
+            value={formData.E_tssOfSample}
+          />
+          <label>F</label>
+          <input
+            id="F"
+            name="F_filterAndAsh"
+            type="text"
+            onChange={handleChange}
+            required={true}
+            placeholder="Weight of Filter and Ash"
+            value={formData.F_filterAndAsh}
+          />
+          <label>G</label>
+          <input
+            id=""
+            name="G_weightOfAsh"
+            type="text"
+            onChange={handleChange}
+            required={true}
+            placeholder="Weight of Ash"
+            value={formData.G_weightOfAsh}
+          />
+          <label>H</label>
+          <input
+            id="H"
+            name="H_weightOfVolatileSolids"
+            type="text"
+            onChange={handleChange}
+            required={true}
+            placeholder="Weight of Volatile Solids"
+            value={formData.H_weightOfVolatileSolids}
+          />
+
+          <label>I</label>
+          <input
+            id="I"
+            name="I_volatileSolidsVSS"
+            type="text"
+            onChange={handleChange}
+            required={true}
+            placeholder="Volatile Solids VSS"
+            value={formData.I_volatileSolidsVSS}
+          />
+          <label>J</label>
+          <input
+            id="J"
+            name="J_percentVolatileSolids"
+            type="text"
+            onChange={handleChange}
+            required={true}
+            placeholder="Percent Volatile Solids"
+            value={formData.J_percentVolatileSolids}
+          />
+
+          <input type="submit" className="btn max-w-xs" value="Create Report" />
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default TotalSuspendedSolidsTestForm;
