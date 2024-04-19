@@ -26,7 +26,6 @@ const ReportPage = async ({ params }) => {
   return (
     <div>
       <SettleometerForm />
-      <TotalSolidsTestForm />
       <TotalSuspendedSolidsTestForm />
     </div>
   );

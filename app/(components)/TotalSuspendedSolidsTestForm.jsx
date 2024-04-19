@@ -7,7 +7,7 @@ const TotalSuspendedSolidsTestForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
+    setTssFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -16,9 +16,9 @@ const TotalSuspendedSolidsTestForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submitted");
-    const res = await fetch("", {
+    const res = await fetch("/api/TSSTest", {
       method: "POST",
-      body: JSON.stringify({ formData }),
+      body: JSON.stringify({ tssFormData }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -52,7 +52,7 @@ const TotalSuspendedSolidsTestForm = () => {
     notes: "",
   };
 
-  const [formData, setFormData] = useState(startingReportData);
+  const [tssFormData, setTssFormData] = useState(startingReportData);
 
   return (
     <div>
@@ -73,14 +73,14 @@ const TotalSuspendedSolidsTestForm = () => {
             type="text"
             onChange={handleChange}
             required={true}
-            value={formData.testNumber}
+            value={tssFormData.testNumber}
           />
           <label>Notes</label>
           <textarea
             id="notes"
             name="notes"
             onChange={handleChange}
-            value={formData.notes}
+            value={tssFormData.notes}
             rows="5"
           />
 
@@ -92,7 +92,7 @@ const TotalSuspendedSolidsTestForm = () => {
             onChange={handleChange}
             required={true}
             placeholder="Dry Filter With Solids"
-            value={formData.A_dryFilterWithSolids}
+            value={tssFormData.A_dryFilterWithSolids}
           />
 
           <label>B</label>
@@ -103,7 +103,7 @@ const TotalSuspendedSolidsTestForm = () => {
             onChange={handleChange}
             required={true}
             placeholder="Clean Filter"
-            value={formData.B_cleanFilter}
+            value={tssFormData.B_cleanFilter}
           />
           <label>C</label>
           <input
@@ -113,7 +113,7 @@ const TotalSuspendedSolidsTestForm = () => {
             onChange={handleChange}
             required={true}
             placeholder="Weight of Dry Solids"
-            value={formData.C_drySolids}
+            value={tssFormData.C_drySolids}
           />
           <label>D</label>
           <input
@@ -123,7 +123,7 @@ const TotalSuspendedSolidsTestForm = () => {
             onChange={handleChange}
             required={true}
             placeholder="Vol of Sample"
-            value={formData.D_volOfSample}
+            value={tssFormData.D_volOfSample}
           />
           <label>E</label>
           <input
@@ -133,7 +133,7 @@ const TotalSuspendedSolidsTestForm = () => {
             onChange={handleChange}
             required={true}
             placeholder="TSS of Sample"
-            value={formData.E_tssOfSample}
+            value={tssFormData.E_tssOfSample}
           />
           <label>F</label>
           <input
@@ -143,7 +143,7 @@ const TotalSuspendedSolidsTestForm = () => {
             onChange={handleChange}
             required={true}
             placeholder="Weight of Filter and Ash"
-            value={formData.F_filterAndAsh}
+            value={tssFormData.F_filterAndAsh}
           />
           <label>G</label>
           <input
@@ -153,7 +153,7 @@ const TotalSuspendedSolidsTestForm = () => {
             onChange={handleChange}
             required={true}
             placeholder="Weight of Ash"
-            value={formData.G_weightOfAsh}
+            value={tssFormData.G_weightOfAsh}
           />
           <label>H</label>
           <input
@@ -163,7 +163,7 @@ const TotalSuspendedSolidsTestForm = () => {
             onChange={handleChange}
             required={true}
             placeholder="Weight of Volatile Solids"
-            value={formData.H_weightOfVolatileSolids}
+            value={tssFormData.H_weightOfVolatileSolids}
           />
 
           <label>I</label>
@@ -174,7 +174,7 @@ const TotalSuspendedSolidsTestForm = () => {
             onChange={handleChange}
             required={true}
             placeholder="Volatile Solids VSS"
-            value={formData.I_volatileSolidsVSS}
+            value={tssFormData.I_volatileSolidsVSS}
           />
           <label>J</label>
           <input
@@ -184,7 +184,7 @@ const TotalSuspendedSolidsTestForm = () => {
             onChange={handleChange}
             required={true}
             placeholder="Percent Volatile Solids"
-            value={formData.J_percentVolatileSolids}
+            value={tssFormData.J_percentVolatileSolids}
           />
 
           <input type="submit" className="btn max-w-xs" value="Create Report" />
