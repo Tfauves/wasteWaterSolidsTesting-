@@ -7,10 +7,60 @@ const TotalSuspendedSolidsTestForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setTssFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+
+    let updatedFormData = { ...tssFormData };
+
+    if (name === "A_dryFilterWithSolids" || name === "B_cleanFilter") {
+      const otherFieldName =
+        name === "A_dryFilterWithSolids"
+          ? "B_cleanFilter"
+          : "A_dryFilterWithSolids";
+      const otherValue = parseFloat(updatedFormData[otherFieldName]) || 0;
+      const currentValue = parseFloat(value) || 0;
+
+      // Calculate the difference and update state for C
+      const difference = currentValue - otherValue;
+      updatedFormData = {
+        ...updatedFormData,
+        C_drySolids: difference.toString(),
+        [name]: value,
+      };
+    } else if (
+      name === "C_drySolids" ||
+      name === "D_volOfSample" ||
+      name === "H_weightOfVolatileSolids"
+    ) {
+      const C = parseFloat(updatedFormData["C_drySolids"]) || 0;
+      const D = parseFloat(updatedFormData["D_volOfSample"]) || 0;
+      const H = parseFloat(updatedFormData["H_weightOfVolatileSolids"]) || 0;
+
+      updatedFormData = {
+        ...updatedFormData,
+        E_tssOfSample: ((C / D) * 1000000).toString(),
+        I_volatileSolidsVSS: ((H / D) * 1000000).toString(),
+        J_percentVolatileSolids: (
+          (((H / D) * 1000000) / ((C / D) * 1000000)) *
+          100
+        ).toString(),
+        [name]: value,
+      };
+    } else if (name === "G_weightOfAsh") {
+      const C = parseFloat(updatedFormData["C_drySolids"]) || 0;
+      const G = parseFloat(value) || 0;
+
+      updatedFormData = {
+        ...updatedFormData,
+        G_weightOfAsh: (C - G).toString(),
+        [name]: value,
+      };
+    } else {
+      updatedFormData = {
+        ...updatedFormData,
+        [name]: value,
+      };
+    }
+
+    setTssFormData(updatedFormData);
   };
 
   const handleSubmit = async (e) => {
