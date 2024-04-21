@@ -49,12 +49,12 @@ const SettleometerForm = () => {
     description: "",
     category: "",
     timeMarks: {
-      fivemin: "",
-      tenmin: "",
-      fifteenmin: "",
-      twentymin: "",
-      twentyfivemin: "",
-      thirtymin: "",
+      five: "",
+      ten: "",
+      fifteen: "",
+      twenty: "",
+      twenty_five: "",
+      thirty: "",
     },
   };
 

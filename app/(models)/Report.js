@@ -10,7 +10,7 @@ const ReportSchema = new Schema(
     description: String,
     category: String,
     timeMarks: {
-      fivemin: String,
+      five: String,
       tenmin: String,
       fifteenmin: String,
       twentymin: String,

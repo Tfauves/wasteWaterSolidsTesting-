@@ -10,56 +10,71 @@ const TotalSuspendedSolidsTestForm = () => {
 
     let updatedFormData = { ...tssFormData };
 
-    if (name === "A_dryFilterWithSolids" || name === "B_cleanFilter") {
-      const otherFieldName =
-        name === "A_dryFilterWithSolids"
-          ? "B_cleanFilter"
-          : "A_dryFilterWithSolids";
-      const otherValue = parseFloat(updatedFormData[otherFieldName]) || 0;
-      const currentValue = parseFloat(value) || 0;
-
-      // Calculate the difference and update state for C
-      const difference = currentValue - otherValue;
+    if (name.startsWith("data_")) {
+      const fieldName = name.slice(5); // Remove "data_" prefix
       updatedFormData = {
         ...updatedFormData,
-        C_drySolids: difference.toString(),
-        [name]: value,
+        testData: {
+          ...updatedFormData.testData,
+          [fieldName]: value,
+        },
       };
+
+      // Perform calculations based on updated fields
+      if (
+        fieldName === "A_dryFilterWithSolids" ||
+        fieldName === "B_cleanFilter"
+      ) {
+        const otherFieldName =
+          fieldName === "A_dryFilterWithSolids"
+            ? "B_cleanFilter"
+            : "A_dryFilterWithSolids";
+        const otherValue =
+          parseFloat(updatedFormData.testData[otherFieldName]) || 0;
+        const currentValue = parseFloat(value) || 0;
+        const difference = currentValue - otherValue;
+        updatedFormData.testData = {
+          ...updatedFormData.testData,
+          C_drySolids: difference.toString(),
+        };
+      } else if (
+        fieldName === "C_drySolids" ||
+        fieldName === "D_volOfSample" ||
+        fieldName === "H_weightOfVolatileSolids"
+      ) {
+        const C = parseFloat(updatedFormData.testData["C_drySolids"]) || 0;
+        const D = parseFloat(updatedFormData.testData["D_volOfSample"]) || 0;
+        const H =
+          parseFloat(updatedFormData.testData["H_weightOfVolatileSolids"]) || 0;
+        updatedFormData.testData = {
+          ...updatedFormData.testData,
+          E_tssOfSample: ((C / D) * 1000000).toString(),
+          I_volatileSolidsVSS: ((H / D) * 1000000).toString(),
+          J_percentVolatileSolids: (
+            (((H / D) * 1000000) / ((C / D) * 1000000)) *
+            100
+          ).toString(),
+        };
+      } else if (fieldName === "G_weightOfAsh") {
+        const C = parseFloat(updatedFormData.testData["C_drySolids"]) || 0;
+        const G = parseFloat(value) || 0;
+        updatedFormData.testData = {
+          ...updatedFormData.testData,
+          G_weightOfAsh: (C - G).toString(),
+        };
+      }
     } else if (
-      name === "C_drySolids" ||
-      name === "D_volOfSample" ||
-      name === "H_weightOfVolatileSolids"
+      name === "testNumber" ||
+      name === "dishNumber" ||
+      name === "notes"
     ) {
-      const C = parseFloat(updatedFormData["C_drySolids"]) || 0;
-      const D = parseFloat(updatedFormData["D_volOfSample"]) || 0;
-      const H = parseFloat(updatedFormData["H_weightOfVolatileSolids"]) || 0;
-
-      updatedFormData = {
-        ...updatedFormData,
-        E_tssOfSample: ((C / D) * 1000000).toString(),
-        I_volatileSolidsVSS: ((H / D) * 1000000).toString(),
-        J_percentVolatileSolids: (
-          (((H / D) * 1000000) / ((C / D) * 1000000)) *
-          100
-        ).toString(),
-        [name]: value,
-      };
-    } else if (name === "G_weightOfAsh") {
-      const C = parseFloat(updatedFormData["C_drySolids"]) || 0;
-      const G = parseFloat(value) || 0;
-
-      updatedFormData = {
-        ...updatedFormData,
-        G_weightOfAsh: (C - G).toString(),
-        [name]: value,
-      };
-    } else {
       updatedFormData = {
         ...updatedFormData,
         [name]: value,
       };
     }
 
+    // Update state
     setTssFormData(updatedFormData);
   };
 
@@ -83,22 +98,25 @@ const TotalSuspendedSolidsTestForm = () => {
 
   const startingReportData = {
     testNumber: "",
-    A_dryFilterWithSolids: "",
-    B_cleanFilter: "",
-    // A-B
-    C_drySolids: "",
-    D_volOfSample: "",
-    //C/D * 1,000,000
-    E_tssOfSample: "",
-    F_filterAndAsh: "",
-    //F-B
-    G_weightOfAsh: "",
-    //C-G
-    H_weightOfVolatileSolids: "",
-    //H/D * 1,000,000
-    I_volatileSolidsVSS: "",
-    //I/E *100
-    J_percentVolatileSolids: "",
+    dishNumber: "",
+    testData: {
+      A_dryFilterWithSolids: "",
+      B_cleanFilter: "",
+      // A-B
+      C_drySolids: "",
+      D_volOfSample: "",
+      //C/D * 1,000,000
+      E_tssOfSample: "",
+      F_filterAndAsh: "",
+      //F-B
+      G_weightOfAsh: "",
+      //C-G
+      H_weightOfVolatileSolids: "",
+      //H/D * 1,000,000
+      I_volatileSolidsVSS: "",
+      //I/E *100
+      J_percentVolatileSolids: "",
+    },
     notes: "",
   };
 
@@ -122,8 +140,15 @@ const TotalSuspendedSolidsTestForm = () => {
             name="testNumber"
             type="text"
             onChange={handleChange}
-            required={true}
             value={tssFormData.testNumber}
+          />
+          <label>Dish Number(s)</label>
+          <input
+            id="dishNumber"
+            name="dishNumber"
+            type="text"
+            onChange={handleChange}
+            value={tssFormData.dishNumber}
           />
           <label>Notes</label>
           <textarea
@@ -133,109 +158,23 @@ const TotalSuspendedSolidsTestForm = () => {
             value={tssFormData.notes}
             rows="5"
           />
-
-          <label>A</label>
-          <input
-            id="A"
-            name="A_dryFilterWithSolids"
-            type="text"
-            onChange={handleChange}
-            required={true}
-            placeholder="Dry Filter With Solids"
-            value={tssFormData.A_dryFilterWithSolids}
-          />
-
-          <label>B</label>
-          <input
-            id="B"
-            name="B_cleanFilter"
-            type="text"
-            onChange={handleChange}
-            required={true}
-            placeholder="Clean Filter"
-            value={tssFormData.B_cleanFilter}
-          />
-          <label>C</label>
-          <input
-            id="C"
-            name="C_drySolids"
-            type="text"
-            onChange={handleChange}
-            required={true}
-            placeholder="Weight of Dry Solids"
-            value={tssFormData.C_drySolids}
-          />
-          <label>D</label>
-          <input
-            id="D"
-            name="D_volOfSample"
-            type="text"
-            onChange={handleChange}
-            required={true}
-            placeholder="Vol of Sample"
-            value={tssFormData.D_volOfSample}
-          />
-          <label>E</label>
-          <input
-            id="E"
-            name="E_tssOfSample"
-            type="text"
-            onChange={handleChange}
-            required={true}
-            placeholder="TSS of Sample"
-            value={tssFormData.E_tssOfSample}
-          />
-          <label>F</label>
-          <input
-            id="F"
-            name="F_filterAndAsh"
-            type="text"
-            onChange={handleChange}
-            required={true}
-            placeholder="Weight of Filter and Ash"
-            value={tssFormData.F_filterAndAsh}
-          />
-          <label>G</label>
-          <input
-            id=""
-            name="G_weightOfAsh"
-            type="text"
-            onChange={handleChange}
-            required={true}
-            placeholder="Weight of Ash"
-            value={tssFormData.G_weightOfAsh}
-          />
-          <label>H</label>
-          <input
-            id="H"
-            name="H_weightOfVolatileSolids"
-            type="text"
-            onChange={handleChange}
-            required={true}
-            placeholder="Weight of Volatile Solids"
-            value={tssFormData.H_weightOfVolatileSolids}
-          />
-
-          <label>I</label>
-          <input
-            id="I"
-            name="I_volatileSolidsVSS"
-            type="text"
-            onChange={handleChange}
-            required={true}
-            placeholder="Volatile Solids VSS"
-            value={tssFormData.I_volatileSolidsVSS}
-          />
-          <label>J</label>
-          <input
-            id="J"
-            name="J_percentVolatileSolids"
-            type="text"
-            onChange={handleChange}
-            required={true}
-            placeholder="Percent Volatile Solids"
-            value={tssFormData.J_percentVolatileSolids}
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {Object.entries(tssFormData.testData).map(
+              ([timeKey, timeValue]) => (
+                <div className="flex flex-col" key={timeKey}>
+                  <label>{timeKey}</label>
+                  <input
+                    id={timeKey}
+                    name={`data_${timeKey}`}
+                    type="text"
+                    onChange={handleChange}
+                    value={timeValue}
+                    className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring focus:border-blue-300 w-full"
+                  />
+                </div>
+              )
+            )}
+          </div>
 
           <input type="submit" className="btn max-w-xs" value="Create Report" />
         </form>
