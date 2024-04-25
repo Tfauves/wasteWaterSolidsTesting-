@@ -11,11 +11,11 @@ const ReportSchema = new Schema(
     category: String,
     timeMarks: {
       five: String,
-      tenmin: String,
-      fifteenmin: String,
-      twentymin: String,
-      twentyfivemin: String,
-      thirtymin: String,
+      ten: String,
+      fifteen: String,
+      twenty: String,
+      twentyFive: String,
+      thirty: String,
     },
   },
   {

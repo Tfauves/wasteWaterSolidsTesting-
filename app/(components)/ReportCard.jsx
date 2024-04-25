@@ -27,15 +27,17 @@ const ReportCard = ({ report }) => {
         <h4>{report.operatorID}</h4>
         <hr className="h-px border-0 bg-page mb-2" />
         <p className="whitespace-pre-wrap">{report.description}</p>
-        {/* Render time marks */}
-        <div className="flex mt-2">
-          {Object.entries(report.timeMarks).map(([key, value]) => (
-            <div key={key} className="flex flex-col mr-4">
-              <p className="text-xs my-1">{key}</p>
-              <p className="text-sm">{value}</p>
-            </div>
-          ))}
-        </div>
+        {/* Render time marks if report.timeMarks is defined */}
+        {report.timeMarks && (
+          <div className="flex mt-2">
+            {Object.entries(report.timeMarks).map(([key, value]) => (
+              <div key={key} className="flex flex-col mr-4">
+                <p className="text-xs my-1">{key}</p>
+                <p className="text-sm">{value}</p>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="flex-grow">
           <TestDataDisplay timeMarks={report.timeMarks} />
         </div>

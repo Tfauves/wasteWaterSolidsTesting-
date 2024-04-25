@@ -7,10 +7,8 @@ const SettleometerForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // If the changed input belongs to timeMarks
     if (name.startsWith("timeMarks")) {
-      const timeKey = name.split("_")[1]; // Extract the time mark key
+      const timeKey = name.split("_")[1];
       const updatedTimeMarks = { ...formData.timeMarks, [timeKey]: value };
       setFormData((prevState) => ({
         ...prevState,
@@ -53,7 +51,7 @@ const SettleometerForm = () => {
       ten: "",
       fifteen: "",
       twenty: "",
-      twenty_five: "",
+      twentyFive: "",
       thirty: "",
     },
   };
@@ -96,7 +94,10 @@ const SettleometerForm = () => {
             value={formData.category}
             onChange={handleChange}
           >
-            <option value="routine">Routine Monitor</option>
+            <option value="" disabled hidden>
+              Select an option
+            </option>
+            <option value="routine monitor">Routine Monitor</option>
             <option value="suspected problem">Suspected Problem</option>
             <option value="test">Test</option>
           </select>
