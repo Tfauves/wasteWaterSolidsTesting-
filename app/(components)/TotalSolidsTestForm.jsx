@@ -3,13 +3,87 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const TotalSolidsTestForm = () => {
-  const router = useRouter;
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    filterNumber: "",
+    testData: {
+      A_weightDryFilterAndSolids: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
+      B_weightOfCleanFilter: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
+      // A - B
+      C_weightOfDrySolids: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
 
+      D_volumeOfSampleFiltered: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
+
+      // C/D * 1,000,000
+      E_TSS: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
+
+      F_weightOfFilterAndAsh: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
+
+      // F-B
+      G_weightOfAsh: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
+
+      // C - G
+      H_weightOfVolatileSolids: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
+
+      // H / D * 1,000,000
+      I_VSS: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
+
+      // I / E * 100
+      J_percentVolatileSolids: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
+    },
+  });
+
+  const handleChange = (e, section, field) => {
+    const { value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      testData: {
+        ...prevState.testData,
+        [section]: {
+          ...prevState.testData[section],
+          [field]: value,
+        },
+      },
     }));
   };
 
@@ -32,27 +106,6 @@ const TotalSolidsTestForm = () => {
     router.push("/");
   };
 
-  const startingData = {
-    filterNumber: "",
-    A_weightDryFilterAndSolids: {
-      mixedLiquor: "",
-      influent: "",
-      final: "",
-    },
-    B_weightOfCleanFilter: {
-      mixedLiquor: "",
-      influent: "",
-      final: "",
-    },
-    // A - B
-    C_weightOfDrySolids: {
-      mixedLiquor: "",
-      influent: "",
-      final: "",
-    },
-  };
-  const [formData, setFormData] = useState(startingData);
-
   return (
     <div>
       <div className="flex mt-10 justify-center">
@@ -64,45 +117,24 @@ const TotalSolidsTestForm = () => {
           method="post"
           onSubmit={handleSubmit}
         >
-          <input
-            type="text"
-            name="filterNumber"
-            value={formData.filterNumber}
-            onChange={handleChange}
-            placeholder="Filter Number"
-          />
-          <div>
-            <div>
-              <h5>Weight of Dry Filter with Solids</h5>
-            </div>
-            <label>Mixed Liquor</label>
-            <input
-              type="text"
-              name="A_weightDryFilterAndSolids.mixedLiquor"
-              value={formData.A_weightDryFilterAndSolids.mixedLiquor}
-              onChange={handleChange}
-              placeholder="Mixed Liquor"
-            />
-            <div>
-              <label>Influent</label>
-              <input
-                type="text"
-                name="A_weightDryFilterAndSolids.influent"
-                value={formData.A_weightDryFilterAndSolids.influent}
-                onChange={handleChange}
-                placeholder="Influent"
-              />
-            </div>
-            <div>
-              <label>Final</label>
-              <input
-                type="text"
-                name="A_weightDryFilterAndSolids.final"
-                value={formData.A_weightDryFilterAndSolids.final}
-                onChange={handleChange}
-                placeholder="Final"
-              />
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {/* Iterate over testData fields and create input fields */}
+            {Object.entries(formData.testData).map(([section, fields]) => (
+              <div className="flex flex-col" key={section}>
+                <label>{section}</label>
+                {Object.entries(fields).map(([field, value]) => (
+                  <input
+                    key={field}
+                    type="text"
+                    name={`${section}.${field}`}
+                    value={value}
+                    onChange={(e) => handleChange(e, section, field)}
+                    placeholder={field}
+                    className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring focus:border-blue-300 w-full"
+                  />
+                ))}
+              </div>
+            ))}
           </div>
           <input type="submit" className="btn max-w-xs" value="Create Report" />
         </form>
