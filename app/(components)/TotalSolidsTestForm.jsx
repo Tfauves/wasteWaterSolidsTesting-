@@ -4,100 +4,90 @@ import { useRouter } from "next/navigation";
 
 const TotalSolidsTestForm = () => {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    filterNumber: "",
-    testData: {
-      A_weightDryFilterAndSolids: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-      B_weightOfCleanFilter: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-      // A - B
-      C_weightOfDrySolids: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
 
-      D_volumeOfSampleFiltered: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-      // C/D * 1,000,000
-      E_TSS: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
+    let updatedFormData = { ...tssFormData };
 
-      F_weightOfFilterAndAsh: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-
-      // F-B
-      G_weightOfAsh: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-
-      // C - G
-      H_weightOfVolatileSolids: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-
-      // H / D * 1,000,000
-      I_VSS: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-
-      // I / E * 100
-      J_percentVolatileSolids: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-    },
-  });
-
-  const handleChange = (e, section, field) => {
-    const { value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      testData: {
-        ...prevState.testData,
-        [section]: {
-          ...prevState.testData[section],
-          [field]: value,
+    if (name.startsWith("data_")) {
+      const fieldName = name.slice(5); // Remove "data_" prefix
+      updatedFormData = {
+        ...updatedFormData,
+        testData: {
+          ...updatedFormData.testData,
+          [fieldName]: value,
         },
-      },
-    }));
+      };
+
+      // Perform calculations based on updated fields
+      if (
+        fieldName === "A_dryFilterWithSolids" ||
+        fieldName === "B_cleanFilter"
+      ) {
+        const otherFieldName =
+          fieldName === "A_dryFilterWithSolids"
+            ? "B_cleanFilter"
+            : "A_dryFilterWithSolids";
+        const otherValue =
+          parseFloat(updatedFormData.testData[otherFieldName]) || 0;
+        const currentValue = parseFloat(value) || 0;
+        const difference = currentValue - otherValue;
+        updatedFormData.testData = {
+          ...updatedFormData.testData,
+          C_drySolids: difference.toString(),
+        };
+      } else if (
+        fieldName === "C_drySolids" ||
+        fieldName === "D_volOfSample" ||
+        fieldName === "H_weightOfVolatileSolids"
+      ) {
+        const C = parseFloat(updatedFormData.testData["C_drySolids"]) || 0;
+        const D = parseFloat(updatedFormData.testData["D_volOfSample"]) || 0;
+        const H =
+          parseFloat(updatedFormData.testData["H_weightOfVolatileSolids"]) || 0;
+        updatedFormData.testData = {
+          ...updatedFormData.testData,
+          E_tssOfSample: ((C / D) * 1000000).toString(),
+          I_volatileSolidsVSS: ((H / D) * 1000000).toString(),
+          J_percentVolatileSolids: (
+            (((H / D) * 1000000) / ((C / D) * 1000000)) *
+            100
+          ).toString(),
+        };
+      } else if (fieldName === "G_weightOfAsh") {
+        const C = parseFloat(updatedFormData.testData["C_drySolids"]) || 0;
+        const G = parseFloat(value) || 0;
+        updatedFormData.testData = {
+          ...updatedFormData.testData,
+          G_weightOfAsh: (C - G).toString(),
+        };
+      }
+    } else if (
+      name === "testNumber" ||
+      name === "dishNumber" ||
+      name === "notes"
+    ) {
+      updatedFormData = {
+        ...updatedFormData,
+        [name]: value,
+      };
+    }
+
+    // Update state
+    setTssFormData(updatedFormData);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submitted");
-    const res = await fetch("/api/", {
+    const res = await fetch("/api/TSSTest", {
       method: "POST",
-      body: JSON.stringify({ formData }),
+      body: JSON.stringify({ tssFormData }),
       headers: {
         "Content-Type": "application/json",
       },
     });
-
     if (!res.ok) {
       throw new Error("Failed to create Report!");
     }
@@ -106,10 +96,36 @@ const TotalSolidsTestForm = () => {
     router.push("/");
   };
 
+  const startingReportData = {
+    testNumber: "",
+    dishNumber: "",
+    testData: {
+      A_dryFilterWithSolids: "",
+      B_cleanFilter: "",
+      // A-B
+      C_drySolids: "",
+      D_volOfSample: "",
+      //C/D * 1,000,000
+      E_tssOfSample: "",
+      F_filterAndAsh: "",
+      //F-B
+      G_weightOfAsh: "",
+      //C-G
+      H_weightOfVolatileSolids: "",
+      //H/D * 1,000,000
+      I_volatileSolidsVSS: "",
+      //I/E *100
+      J_percentVolatileSolids: "",
+    },
+    notes: "",
+  };
+
+  const [tssFormData, setTssFormData] = useState(startingReportData);
+
   return (
     <div>
       <div className="flex mt-10 justify-center">
-        <h2>Total Solids Test</h2>
+        <h2>Total Suspended Solids Test</h2>
       </div>
       <div className="flex justify-center">
         <form
@@ -117,25 +133,49 @@ const TotalSolidsTestForm = () => {
           method="post"
           onSubmit={handleSubmit}
         >
+          <h4>Create Your Report</h4>
+          <label>Test Number</label>
+          <input
+            id="testNumber"
+            name="testNumber"
+            type="text"
+            onChange={handleChange}
+            value={tssFormData.testNumber}
+          />
+          <label>Dish Number(s)</label>
+          <input
+            id="dishNumber"
+            name="dishNumber"
+            type="text"
+            onChange={handleChange}
+            value={tssFormData.dishNumber}
+          />
+          <label>Notes</label>
+          <textarea
+            id="notes"
+            name="notes"
+            onChange={handleChange}
+            value={tssFormData.notes}
+            rows="5"
+          />
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {/* Iterate over testData fields and create input fields */}
-            {Object.entries(formData.testData).map(([section, fields]) => (
-              <div className="flex flex-col" key={section}>
-                <label>{section}</label>
-                {Object.entries(fields).map(([field, value]) => (
+            {Object.entries(tssFormData.testData).map(
+              ([timeKey, timeValue]) => (
+                <div className="flex flex-col" key={timeKey}>
+                  <label>{timeKey}</label>
                   <input
-                    key={field}
+                    id={timeKey}
+                    name={`data_${timeKey}`}
                     type="text"
-                    name={`${section}.${field}`}
-                    value={value}
-                    onChange={(e) => handleChange(e, section, field)}
-                    placeholder={field}
+                    onChange={handleChange}
+                    value={timeValue}
                     className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring focus:border-blue-300 w-full"
                   />
-                ))}
-              </div>
-            ))}
+                </div>
+              )
+            )}
           </div>
+
           <input type="submit" className="btn max-w-xs" value="Create Report" />
         </form>
       </div>
