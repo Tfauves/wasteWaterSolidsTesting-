@@ -26,7 +26,7 @@ const SettleometerForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submitted");
-    const res = await fetch("/api/Reports", {
+    const res = await fetch("/api/SettleometerTest", {
       method: "POST",
       body: JSON.stringify({ formData }),
       headers: {

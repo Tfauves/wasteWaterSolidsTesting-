@@ -81,7 +81,7 @@ const TotalSolidsTestForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submitted");
-    const res = await fetch("/api/TSSTest", {
+    const res = await fetch("/api/TotalSolidsTest", {
       method: "POST",
       body: JSON.stringify({ tssFormData }),
       headers: {
