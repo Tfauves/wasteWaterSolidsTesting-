@@ -1,4 +1,4 @@
-import TotalSolidsTest from "@/app/(models)/TotalSusSolidsTest";
+import TotalSolidsTest from "@/app/(models)/TotalSuspendedSolidsTest";
 import { NextResponse } from "next/server";
 
 export async function GET(req, { params }) {

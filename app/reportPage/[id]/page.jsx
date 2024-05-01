@@ -1,6 +1,6 @@
 import SettleometerForm from "@/app/(components)/SettleometerForm";
+import SuspendedSolidsTestForm from "@/app/(components)/SuspendedSolidsTestForm";
 import TotalSolidsTestForm from "@/app/(components)/TotalSolidsTestForm";
-import TotalSuspendedSolidsTestForm from "@/app/(components)/TotalSuspendedSolidsTestForm";
 
 const getReportById = async (id) => {
   const res = await fetch(`http://localhost:3000/api/reports/${id}`, {
@@ -27,6 +27,7 @@ const ReportPage = async ({ params }) => {
     <div>
       <SettleometerForm />
       <TotalSolidsTestForm />
+      <SuspendedSolidsTestForm />
     </div>
   );
 };

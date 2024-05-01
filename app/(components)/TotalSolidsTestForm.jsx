@@ -125,7 +125,7 @@ const TotalSolidsTestForm = () => {
   return (
     <div>
       <div className="flex mt-10 justify-center">
-        <h2>Total Suspended Solids Test</h2>
+        <h2>Total Solids Test</h2>
       </div>
       <div className="flex justify-center">
         <form

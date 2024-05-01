@@ -1,77 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-
+/// need to fix this form.
 const SuspendedSolidsTestForm = () => {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    filterNumber: "",
-    testData: {
-      A_weightDryFilterAndSolids: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-      B_weightOfCleanFilter: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-      // A - B
-      C_weightOfDrySolids: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-
-      D_volumeOfSampleFiltered: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-
-      // C/D * 1,000,000
-      E_TSS: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-
-      F_weightOfFilterAndAsh: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-
-      // F-B
-      G_weightOfAsh: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-
-      // C - G
-      H_weightOfVolatileSolids: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-
-      // H / D * 1,000,000
-      I_VSS: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-
-      // I / E * 100
-      J_percentVolatileSolids: {
-        mixedLiquor: "",
-        influent: "",
-        final: "",
-      },
-    },
-  });
+  const [formData, setFormData] = useState({});
 
   const handleChange = (e, section, field) => {
     const { value } = e.target;
@@ -90,7 +23,7 @@ const SuspendedSolidsTestForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submitted");
-    const res = await fetch("/api/", {
+    const res = await fetch("/api/SuspendedSolidsTest", {
       method: "POST",
       body: JSON.stringify({ formData }),
       headers: {
@@ -109,7 +42,7 @@ const SuspendedSolidsTestForm = () => {
   return (
     <div>
       <div className="flex mt-10 justify-center">
-        <h2>Total Solids Test</h2>
+        <h2>Total Suspended Solids Test</h2>
       </div>
       <div className="flex justify-center">
         <form

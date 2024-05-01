@@ -1,4 +1,4 @@
-import TotalSusSolidsTest from "@/app/(models)/TotalSusSolidsTest";
+import TotalSuspendedSolidsTest from "@/app/(models)/TotalSuspendedSolidsTest";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -6,7 +6,7 @@ export async function POST(req) {
     const body = await req.json();
     const tssReportData = body.tssFormData;
     console.log(body.tssFormData);
-    await TotalSusSolidsTest.create(tssReportData);
+    await TotalSuspendedSolidsTest.create(tssReportData);
 
     return NextResponse.json({ message: "Report Created" }, { status: 201 });
   } catch (error) {
@@ -16,7 +16,7 @@ export async function POST(req) {
 
 export async function GET() {
   try {
-    const tssReports = await TotalSusSolidsTest.find();
+    const tssReports = await TotalSuspendedSolidsTest.find();
     return NextResponse.json({ tssReports }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Error", error }, { status: 500 });
