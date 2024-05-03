@@ -81,8 +81,8 @@ const SuspendedSolidsTestSchema = new Schema(
   }
 );
 
-const TotalSuspendedSolidsTest =
-  mongoose.models.TotalSuspendedSolidsTest ||
+const TotalSuspendedSolidTest =
+  mongoose.models.TotalSuspendedSolidTest ||
   mongoose.model("Total Suspended Solids Test", SuspendedSolidsTestSchema);
 
-export default TotalSuspendedSolidsTest;
+export default TotalSuspendedSolidTest;
