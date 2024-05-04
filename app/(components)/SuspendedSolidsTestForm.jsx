@@ -1,17 +1,30 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-/// need to fix this form.
+
 const SuspendedSolidsTestForm = () => {
   const router = useRouter();
 
-  const handleChange = (e) => {
+  const handleChange = (e, section, field) => {
     const { name, value } = e.target;
 
-    setTestData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    if (name === "testNumber") {
+      setTestData((prevState) => ({
+        ...prevState,
+        testNumber: value,
+      }));
+    } else {
+      setTestData((prevState) => ({
+        ...prevState,
+        testData: {
+          ...prevState.testData,
+          [section]: {
+            ...prevState.testData[section],
+            [field]: value,
+          },
+        },
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -35,74 +48,74 @@ const SuspendedSolidsTestForm = () => {
 
   const startingReportData = {
     testNumber: "",
-    // dishNumber: "",
-    // testData: {
-    //   A_weightDryFilterAndSolids: {
-    //     mixedLiquor: "",
-    //     influent: "",
-    //     final: "",
-    //   },
-    //   B_weightOfCleanFilter: {
-    //     mixedLiquor: "",
-    //     influent: "",
-    //     final: "",
-    //   },
-    //   // A - B
-    //   C_weightOfDrySolids: {
-    //     mixedLiquor: "",
-    //     influent: "",
-    //     final: "",
-    //   },
+    dishNumber: "",
+    testData: {
+      A_weightDryFilterAndSolids: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
+      B_weightOfCleanFilter: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
+      // A - B
+      C_weightOfDrySolids: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
 
-    //   D_volumeOfSampleFiltered: {
-    //     mixedLiquor: "",
-    //     influent: "",
-    //     final: "",
-    //   },
+      D_volumeOfSampleFiltered: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
 
-    //   // C/D * 1,000,000
-    //   E_TSS: {
-    //     mixedLiquor: "",
-    //     influent: "",
-    //     final: "",
-    //   },
+      // C/D * 1,000,000
+      E_TSS: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
 
-    //   F_weightOfFilterAndAsh: {
-    //     mixedLiquor: "",
-    //     influent: "",
-    //     final: "",
-    //   },
+      F_weightOfFilterAndAsh: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
 
-    //   // F-B
-    //   G_weightOfAsh: {
-    //     mixedLiquor: "",
-    //     influent: "",
-    //     final: "",
-    //   },
+      // F-B
+      G_weightOfAsh: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
 
-    //   // C - G
-    //   H_weightOfVolatileSolids: {
-    //     mixedLiquor: "",
-    //     influent: "",
-    //     final: "",
-    //   },
+      // C - G
+      H_weightOfVolatileSolids: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
 
-    //   // H / D * 1,000,000
-    //   I_VSS: {
-    //     mixedLiquor: "",
-    //     influent: "",
-    //     final: "",
-    //   },
+      // H / D * 1,000,000
+      I_VSS: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
 
-    //   // I / E * 100
-    //   J_percentVolatileSolids: {
-    //     mixedLiquor: "",
-    //     influent: "",
-    //     final: "",
-    //   },
-    // },
+      // I / E * 100
+      J_percentVolatileSolids: {
+        mixedLiquor: "",
+        influent: "",
+        final: "",
+      },
+    },
 
-    // notes: "",
+    notes: "",
   };
 
   const [testData, setTestData] = useState(startingReportData);
@@ -118,16 +131,16 @@ const SuspendedSolidsTestForm = () => {
           method="post"
           onSubmit={handleSubmit}
         >
+          <label>Test Number:</label>
+          <input
+            id="testNumber"
+            type="text"
+            name="testNumber"
+            value={testData.testNumber}
+            onChange={handleChange}
+          />
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <label>Test Number:</label>
-            <input
-              id="testNumber"
-              type="text"
-              name="testNumber"
-              value={testData.testNumber}
-              onChange={handleChange}
-            />
-            {/* {Object.entries(formData.testData).map(([section, fields]) => (
+            {Object.entries(testData.testData).map(([section, fields]) => (
               <div className="flex flex-col" key={section}>
                 <label>{section}</label>
                 {Object.entries(fields).map(([field, value]) => (
@@ -142,7 +155,7 @@ const SuspendedSolidsTestForm = () => {
                   />
                 ))}
               </div>
-            ))} */}
+            ))}
           </div>
           <input type="submit" className="btn max-w-xs" value="Create Report" />
         </form>
