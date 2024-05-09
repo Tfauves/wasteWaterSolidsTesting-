@@ -1,5 +1,6 @@
 import Report from "@/app/(models)/Report";
 import { NextResponse } from "next/server";
+import SettleometerTest from "@/app/(models)/SettleometerTest";
 
 export async function POST(req) {
   try {
@@ -16,7 +17,7 @@ export async function POST(req) {
 
 export async function GET() {
   try {
-    const reports = await Report.find();
+    const reports = await SettleometerTest.find();
     return NextResponse.json({ reports }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Error", error }, { status: 500 });
