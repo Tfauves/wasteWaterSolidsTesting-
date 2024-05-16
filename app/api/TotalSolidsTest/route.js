@@ -1,13 +1,12 @@
-import Report from "@/app/(models)/Report";
+import TotalSolidsTest from "@/app/(models)/TotalSolidsTest";
 import { NextResponse } from "next/server";
-import SettleometerTest from "@/app/(models)/SettleometerTest";
 
 export async function POST(req) {
   try {
     const body = await req.json();
-    const reportData = body.formData;
-    console.log(body.formData);
-    await Report.create(reportData);
+    const tssReportData = body.tssFormData;
+    console.log(body.tssFormData);
+    await TotalSolidsTest.create(tssReportData);
 
     return NextResponse.json({ message: "Report Created" }, { status: 201 });
   } catch (error) {
@@ -17,8 +16,8 @@ export async function POST(req) {
 
 export async function GET() {
   try {
-    const reports = await SettleometerTest.find();
-    return NextResponse.json({ reports }, { status: 200 });
+    const tssReports = await TotalSolidsTest.find();
+    return NextResponse.json({ tssReports }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Error", error }, { status: 500 });
   }

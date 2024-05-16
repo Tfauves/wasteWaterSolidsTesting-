@@ -6,18 +6,27 @@ const SettleometerForm = () => {
   const router = useRouter();
 
   const handleChange = (e) => {
-    const value = e.target.value;
-    const name = e.target.name;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    const { name, value } = e.target;
+    if (name.startsWith("timeMarks")) {
+      const timeKey = name.split("_")[1];
+      const updatedTimeMarks = { ...formData.timeMarks, [timeKey]: value };
+      setFormData((prevState) => ({
+        ...prevState,
+        timeMarks: updatedTimeMarks,
+      }));
+    } else {
+      // If it's a top-level property
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submitted");
-    const res = await fetch("/api/Reports", {
+    const res = await fetch("/api/SettleometerTest", {
       method: "POST",
       body: JSON.stringify({ formData }),
       headers: {
@@ -37,12 +46,14 @@ const SettleometerForm = () => {
     operatorID: "",
     description: "",
     category: "",
-    fivemin: "",
-    tenmin: "",
-    fifteenmin: "",
-    twentymin: "",
-    twentyfivemin: "",
-    thirtymin: "",
+    timeMarks: {
+      five: "",
+      ten: "",
+      fifteen: "",
+      twenty: "",
+      twentyFive: "",
+      thirty: "",
+    },
   };
 
   const [formData, setFormData] = useState(startingReportData);
@@ -83,64 +94,28 @@ const SettleometerForm = () => {
             value={formData.category}
             onChange={handleChange}
           >
-            <option value="routine">Routine Monitor</option>
+            <option value="" disabled hidden>
+              Select an option
+            </option>
+            <option value="routine monitor">Routine Monitor</option>
             <option value="suspected problem">Suspected Problem</option>
             <option value="test">Test</option>
           </select>
-          <label>5 min</label>
-          <input
-            id="5min"
-            name="fivemin"
-            type="text"
-            onChange={handleChange}
-            //   required={true}
-            value={formData.fivemin}
-          />
-          <label>10 min</label>
-          <input
-            id="10min"
-            name="tenmin"
-            type="text"
-            onChange={handleChange}
-            //   required={true}
-            value={formData.tenmin}
-          />
-          <label>15 min</label>
-          <input
-            id="15min"
-            name="fifteenmin"
-            type="text"
-            onChange={handleChange}
-            //   required={true}
-            value={formData.fifteenmin}
-          />
-          <label>20 min</label>
-          <input
-            id="20min"
-            name="twentymin"
-            type="text"
-            onChange={handleChange}
-            //   required={true}
-            value={formData.twentymin}
-          />
-          <label>25 min</label>
-          <input
-            id="25min"
-            name="twentyfivemin"
-            type="text"
-            onChange={handleChange}
-            //   required={true}
-            value={formData.twentyfivemin}
-          />
-          <label>30 min</label>
-          <input
-            id="30min"
-            name="thirtymin"
-            type="text"
-            onChange={handleChange}
-            //   required={true}
-            value={formData.thirtymin}
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {Object.entries(formData.timeMarks).map(([timeKey, timeValue]) => (
+              <div className="flex flex-col" key={timeKey}>
+                <label>{timeKey}</label>
+                <input
+                  id={timeKey}
+                  name={`timeMarks_${timeKey}`}
+                  type="text"
+                  onChange={handleChange}
+                  value={timeValue}
+                  className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring focus:border-blue-300 w-full"
+                />
+              </div>
+            ))}
+          </div>
           <input type="submit" className="btn max-w-xs" value="Create Report" />
         </form>
       </div>

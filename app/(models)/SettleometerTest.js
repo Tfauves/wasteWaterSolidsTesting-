@@ -4,7 +4,7 @@ mongoose.connect(process.env.MONGODB_URI);
 
 mongoose.Promise = global.Promise;
 
-const ReportSchema = new Schema(
+const SettleometerTestSchema = new Schema(
   {
     operatorID: String,
     description: String,
@@ -23,6 +23,8 @@ const ReportSchema = new Schema(
   }
 );
 
-const Report = mongoose.models.Report || mongoose.model("Report", ReportSchema);
+const SettleometerTest =
+  mongoose.models.SettleometerTest ||
+  mongoose.model("Settleometer Test", SettleometerTestSchema);
 
-export default Report;
+export default SettleometerTest;

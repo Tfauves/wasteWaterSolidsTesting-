@@ -19,4 +19,5 @@ const TestDataDisplay = ({ timeMarks }) => {
     </div>
   );
 };
+
 export default TestDataDisplay;
