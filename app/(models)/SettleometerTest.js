@@ -28,3 +28,5 @@ const SettleometerTest =
   mongoose.model("Settleometer Test", SettleometerTestSchema);
 
 export default SettleometerTest;
+
+export { SettleometerTestSchema };
