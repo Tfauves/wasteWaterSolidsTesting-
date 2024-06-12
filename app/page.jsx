@@ -1,10 +1,11 @@
+import { Spinner } from "@phosphor-icons/react";
 import React from "react";
 // import ReportCard from "./(components)/oldReportCard";
-import ReportCard from "./(components)/ReportCard";
+// import ReportCard from "./(components)/ReportCard";
 
 const getReports = async () => {
   try {
-    const res = await fetch("http://localhost:3000/api/Reports", {
+    const res = await fetch("http://localhost:3000/api/SolidsReport", {
       cache: "no-store",
     });
 
@@ -29,7 +30,7 @@ const Dashboard = async () => {
             uniqueCategories?.map((uniqueCategory, categoryIndex) => (
               <div key={categoryIndex} className="mb-4">
                 <h2>{uniqueCategory}</h2>
-                <div>
+                {/* <div>
                   {reports
                     .filter((report) => report.category === uniqueCategory)
                     .map((filteredReport, _index) => (
@@ -39,7 +40,7 @@ const Dashboard = async () => {
                         report={filteredReport}
                       />
                     ))}
-                </div>
+                </div> */}
               </div>
             ))}
         </div>

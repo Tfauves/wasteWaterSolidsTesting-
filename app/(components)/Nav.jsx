@@ -9,7 +9,7 @@ const Nav = () => {
         <Link href={"/"}>
           <FontAwesomeIcon icon={faHome} className="icon" />
         </Link>
-        <Link href={"/reportPage/new"}>
+        <Link href={"/NewReportPage/new"}>
           <FontAwesomeIcon icon={faChartBar} className="icon" />
         </Link>
       </div>

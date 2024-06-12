@@ -1,4 +1,4 @@
-import SolidsReportForm from "@/app/components/SolidsReportForm";
+import SolidsReportForm from "@/app/(components)/SolidsReportForm";
 import React from "react";
 
 const getReportById = async (id) => {
