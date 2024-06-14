@@ -1,7 +1,8 @@
-import { Spinner } from "@phosphor-icons/react";
-import React from "react";
-// import ReportCard from "./(components)/oldReportCard";
-// import ReportCard from "./(components)/ReportCard";
+"use client";
+
+import React, { useState, useEffect } from "react";
+import ReportCard from "./(components)/ReportCard";
+import RotatingSpinner from "./(components)/Spinner";
 
 const getReports = async () => {
   try {
@@ -9,41 +10,73 @@ const getReports = async () => {
       cache: "no-store",
     });
 
-    return res.json();
+    console.log(res.status);
+    console.log(res.headers);
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    console.log("Fetched data:", data);
+    return data;
   } catch (error) {
-    console.log("Failed to get reports");
+    console.error("Failed to get Reports:", error);
+    return { Report: [] };
   }
 };
 
-const Dashboard = async () => {
-  const { reports } = await getReports();
+const Dashboard = () => {
+  const [reports, setReports] = useState([]);
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      const data = await getReports();
+      if (data && data.Report) {
+        setReports(data.Report);
+        console.log("Reports state updated:", data.Report);
+      } else {
+        console.error("No reports data found in the response");
+      }
+    };
+
+    fetchReports();
+  }, []);
+
+  useEffect(() => {
+    console.log("Reports:", reports);
+  }, [reports]);
 
   const uniqueCategories = [
     ...new Set(reports?.map(({ category }) => category)),
   ];
+  console.log("Unique categories:", uniqueCategories);
 
   return (
     <div className="p-5">
-      <div className="lg:grid grid-cols-2 ">
-        <div>
-          {reports &&
-            uniqueCategories?.map((uniqueCategory, categoryIndex) => (
-              <div key={categoryIndex} className="mb-4">
-                <h2>{uniqueCategory}</h2>
-                {/* <div>
-                  {reports
-                    .filter((report) => report.category === uniqueCategory)
-                    .map((filteredReport, _index) => (
-                      <ReportCard
-                        id={_index}
-                        key={_index}
-                        report={filteredReport}
-                      />
-                    ))}
-                </div> */}
+      <div>
+        {reports.length > 0 ? (
+          uniqueCategories.map((uniqueCategory) => (
+            <div key={uniqueCategory} className="mb-4">
+              <h2>{uniqueCategory}</h2>
+              <div className="lg:grid grid-cols-2 xl:grid-cols-4">
+                {reports
+                  .filter((report) => report.category === uniqueCategory)
+                  .map((filteredReport) => (
+                    <ReportCard
+                      id={filteredReport._id}
+                      key={filteredReport._id}
+                      report={filteredReport}
+                    />
+                  ))}
               </div>
-            ))}
-        </div>
+            </div>
+          ))
+        ) : (
+          <span className="inline-flex items-center">
+            Loading... <RotatingSpinner />
+          </span>
+        )}
       </div>
     </div>
   );
