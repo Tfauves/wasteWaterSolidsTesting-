@@ -11,6 +11,16 @@ const SolidsReportSchema = new Schema(
     category: String,
   },
   {
+    timeMarks: {
+      five: "",
+      ten: "",
+      fifteen: "",
+      twenty: "",
+      twentyFive: "",
+      thirty: "",
+    },
+  },
+  {
     timestamps: true,
   }
 );

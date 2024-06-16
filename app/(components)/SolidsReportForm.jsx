@@ -7,54 +7,18 @@ const SolidsReportForm = ({ report }) => {
 
   const EDITMODE = report._id === "new" ? false : true;
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    const name = e.target.name;
-
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (EDITMODE) {
-      console.log("submitted");
-      const res = await fetch(`/api/SolidsReport/${report._id}`, {
-        method: "PUT",
-        body: JSON.stringify({ formData }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to update Report!");
-      }
-    } else {
-      console.log("submitted");
-      const res = await fetch("/api/SolidsReport", {
-        method: "POST",
-        body: JSON.stringify({ formData }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to create Report!");
-      }
-    }
-
-    router.refresh();
-    router.push("/");
-  };
-
   const startingReportData = {
     operatorID: "",
     description: "",
     category: "",
+    timeMarks: {
+      five: "",
+      ten: "",
+      fifteen: "",
+      twenty: "",
+      twentyFive: "",
+      thirty: "",
+    },
   };
 
   if (EDITMODE) {
@@ -64,6 +28,49 @@ const SolidsReportForm = ({ report }) => {
   }
 
   const [formData, setFormData] = useState(startingReportData);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name.startsWith("timeMarks")) {
+      const timeKey = name.split("_")[1];
+      const updatedTimeMarks = { ...formData.timeMarks, [timeKey]: value };
+      setFormData((prevState) => ({
+        ...prevState,
+        timeMarks: updatedTimeMarks,
+      }));
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("submitted");
+
+    const url = EDITMODE
+      ? `/api/SolidsReport/${report._id}`
+      : "/api/SolidsReport";
+    const method = EDITMODE ? "PUT" : "POST";
+
+    const res = await fetch(url, {
+      method: method,
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to submit Report!");
+    }
+
+    router.refresh();
+    router.push("/");
+  };
 
   return (
     <div>
@@ -108,10 +115,28 @@ const SolidsReportForm = ({ report }) => {
             <option value="suspected problem">Suspected Problem</option>
             <option value="test">Test</option>
           </select>
+
+          <h4>Settle'O'meter Report</h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {Object.entries(formData.timeMarks).map(([timeKey, timeValue]) => (
+              <div className="flex flex-col" key={timeKey}>
+                <label>{timeKey}</label>
+                <input
+                  id={timeKey}
+                  name={`timeMarks_${timeKey}`}
+                  type="text"
+                  onChange={handleChange}
+                  value={timeValue}
+                  className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring focus:border-blue-300 w-full"
+                />
+              </div>
+            ))}
+          </div>
+
           <input
             type="submit"
             className="btn max-w-xs"
-            value={EDITMODE ? "Updated Report" : "Create Report"}
+            value={EDITMODE ? "Update Report" : "Create Report"}
           />
         </form>
       </div>

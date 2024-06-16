@@ -43,9 +43,9 @@ const SettleometerForm = () => {
   };
 
   const startingReportData = {
-    operatorID: "",
-    description: "",
-    category: "",
+    // operatorID: "",
+    // description: "",
+    // category: "",
     timeMarks: {
       five: "",
       ten: "",
@@ -70,7 +70,7 @@ const SettleometerForm = () => {
           onSubmit={handleSubmit}
         >
           <h4>Create Your Report</h4>
-          <label>Operator Id:</label>
+          {/* <label>Operator Id:</label>
           <input
             id="operatorID"
             name="operatorID"
@@ -100,7 +100,7 @@ const SettleometerForm = () => {
             <option value="routine monitor">Routine Monitor</option>
             <option value="suspected problem">Suspected Problem</option>
             <option value="test">Test</option>
-          </select>
+          </select> */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {Object.entries(formData.timeMarks).map(([timeKey, timeValue]) => (
               <div className="flex flex-col" key={timeKey}>
@@ -116,7 +116,7 @@ const SettleometerForm = () => {
               </div>
             ))}
           </div>
-          <input type="submit" className="btn max-w-xs" value="Create Report" />
+          {/* <input type="submit" className="btn max-w-xs" value="Create Report" /> */}
         </form>
       </div>
     </div>
