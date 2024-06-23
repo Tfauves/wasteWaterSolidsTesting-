@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
+//todo: map the timemarks for the settleometer test to display in card
+// edit mode to populate the current timemarks
+
 const SolidsReportForm = ({ report }) => {
   const router = useRouter();
 
@@ -11,10 +14,21 @@ const SolidsReportForm = ({ report }) => {
     const value = e.target.value;
     const name = e.target.name;
 
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    if (name.startsWith("timeMarks_")) {
+      const timeKey = name.split("_")[1];
+      setFormData((prevState) => ({
+        ...prevState,
+        timeMarks: {
+          ...prevState.timeMarks,
+          [timeKey]: value,
+        },
+      }));
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -55,6 +69,14 @@ const SolidsReportForm = ({ report }) => {
     operatorID: "",
     description: "",
     category: "",
+    timeMarks: {
+      five: "",
+      ten: "",
+      fifteen: "",
+      twenty: "",
+      twentyFive: "",
+      thirty: "",
+    },
   };
 
   if (EDITMODE) {
@@ -108,6 +130,21 @@ const SolidsReportForm = ({ report }) => {
             <option value="suspected problem">Suspected Problem</option>
             <option value="test">Test</option>
           </select>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {Object.entries(formData.timeMarks).map(([timeKey, timeValue]) => (
+              <div className="flex flex-col" key={timeKey}>
+                <label>{timeKey}</label>
+                <input
+                  id={timeKey}
+                  name={`timeMarks_${timeKey}`}
+                  type="text"
+                  onChange={handleChange}
+                  value={timeValue}
+                  className="border border-gray-300 rounded-md py-2 focus:outline-none focus:ring focus:border-blue-300 w-full"
+                />
+              </div>
+            ))}
+          </div>
           <input
             type="submit"
             className="btn max-w-xs"

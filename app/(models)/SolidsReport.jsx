@@ -9,6 +9,14 @@ const SolidsReportSchema = new Schema(
     operatorID: String,
     description: String,
     category: String,
+    timeMarks: {
+      five: String,
+      ten: String,
+      fifteen: String,
+      twenty: String,
+      twentyFive: String,
+      thirty: String,
+    },
   },
   {
     timestamps: true,
