@@ -1,6 +1,8 @@
 import Link from "next/link";
 import DeleteBlock from "./DeleteBlock";
 
+//todo: issue with edit of timemarks crashing
+// edit mode to populate the current timemarks
 const ReportCard = ({ report }) => {
   const formatTimestamp = (timestamp) => {
     const options = {
@@ -32,6 +34,14 @@ const ReportCard = ({ report }) => {
 
         <p className="text-xs mt-2">{formatTimestamp(report.createdAt)}</p>
       </Link>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {Object.entries(report.timeMarks).map(([timeKey, timeValue]) => (
+          <div className="flex flex-col" key={timeKey}>
+            <p id={timeKey}>{timeKey}</p>
+            <p id={timeKey}>{timeValue}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
