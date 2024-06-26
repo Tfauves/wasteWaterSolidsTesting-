@@ -1,8 +1,6 @@
 import Link from "next/link";
 import DeleteBlock from "./DeleteBlock";
 
-//todo: issue with edit of timemarks crashing
-// edit mode to populate the current timemarks
 const ReportCard = ({ report }) => {
   const formatTimestamp = (timestamp) => {
     const options = {

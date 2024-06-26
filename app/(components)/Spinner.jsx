@@ -3,7 +3,7 @@ import { Spinner } from "@phosphor-icons/react";
 
 const RotatingSpinner = () => {
   return (
-    <Spinner color="white" weight="duotone" size={32}>
+    <Spinner color="white" weight="duotone" size={36}>
       <animate
         attributeName="opacity"
         values="0;1;0"

@@ -2,9 +2,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-//todo: map the timemarks for the settleometer test to display in card
-// edit mode to populate the current timemarks
-
 const SolidsReportForm = ({ report }) => {
   const router = useRouter();
 
