@@ -73,9 +73,11 @@ const Dashboard = () => {
             </div>
           ))
         ) : (
-          <span className="inline-flex items-center">
-            Loading... <RotatingSpinner />
-          </span>
+          <div className="centered-spinner">
+            <span className="inline-flex items-center">
+              Loading... <RotatingSpinner />
+            </span>
+          </div>
         )}
       </div>
     </div>
