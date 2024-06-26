@@ -83,6 +83,7 @@ const SolidsReportForm = ({ report }) => {
     startingReportData["operatorID"] = report.operatorID;
     startingReportData["description"] = report.description;
     startingReportData["category"] = report.category;
+    startingReportData["timeMarks"] = report.timeMarks;
   }
 
   const [formData, setFormData] = useState(startingReportData);
